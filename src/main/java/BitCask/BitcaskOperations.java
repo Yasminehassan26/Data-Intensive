@@ -18,7 +18,7 @@ public class BitcaskOperations implements IBitcask{
     HashMap<String, valueDirectory> mergeTable;
     int maxSize = 2000;
 
-    public BitcaskOperations(String directoryPath) {
+    public BitcaskOperations(String directoryPath, long interval) {
         this.directoryName = directoryPath;
         if(Files.exists(Paths.get(directoryName))){
             if(!Files.exists(Paths.get(directoryPath+File.separator+currentFile))){
@@ -38,6 +38,8 @@ public class BitcaskOperations implements IBitcask{
         }
         this.memtable = new HashMap<>();
         this.mergeTable = new HashMap<>();
+        rebuild();
+        scheduleCompression(interval);
     }
 
     //add record using station key and message
