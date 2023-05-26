@@ -3,6 +3,7 @@ package Parquet;
 import org.apache.avro.generic.GenericRecord;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +12,6 @@ public class ParquetInputHandler {
     private final HashMap<Integer, List<GenericRecord>> stationsRecords;
     private final int batchSize;
     private final ParquetHandler parquetHandler;
-
 
     public ParquetInputHandler(int size) {
         batchSize = size;
@@ -32,10 +32,16 @@ public class ParquetInputHandler {
         temp.add(record);
         stationsRecords.put(weatherStationMessage.getStationId(), temp);
         if(temp.size()>=batchSize){
-            String path=parquetHandler.generateUniqueFilename();
+            String fileName=parquetHandler.generateUniqueFilename();
+            String path="root"+"/"+generateBath(weatherStationMessage.getStationId())+"/"+fileName;
             parquetHandler.writeToParquetFile(path,temp);
             temp.clear();
         }
+
+    }
+    public String generateBath(int id) {
+        String folder= LocalDate.now().toString();
+        return folder+"/"+id;
 
     }
 
