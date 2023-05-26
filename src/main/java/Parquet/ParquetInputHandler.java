@@ -12,6 +12,7 @@ public class ParquetInputHandler {
     private final int batchSize;
     private final ParquetHandler parquetHandler;
 
+
     public ParquetInputHandler(int size) {
         batchSize = size;
         stationsRecords = new HashMap<>();
